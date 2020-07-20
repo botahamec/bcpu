@@ -15,4 +15,14 @@ impl Bit {
 			_ => None
 		}
 	}
+
+	/// converts a number into a bit
+	/// returns None if the input is not zero or one
+	pub fn from_usize(num: usize) -> Option<Bit> {
+		match num {
+			0 => Some(Bit::Zero),
+			1 => Some(Bit::One),
+			_ => None
+		}
+	}
 }

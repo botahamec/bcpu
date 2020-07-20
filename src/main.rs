@@ -1,6 +1,7 @@
 
 mod memory;
 mod bit;
+mod cpu;
 
 use std::io::Read;
 

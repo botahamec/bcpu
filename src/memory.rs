@@ -13,7 +13,7 @@ pub enum MemoryError {
 	TooBigAddress
 }
 
-type MemoryResult<T> = Result<T, MemoryError>;
+pub type MemoryResult<T> = Result<T, MemoryError>;
 
 impl Memory {
 
@@ -45,8 +45,6 @@ impl Memory {
 				Bit::One => self.memory[location / 8] |= 1 << (7 - location % 8),
 				Bit::Zero => self.memory[location / 8] &= 0 << (7 - location % 8)
 			}
-			println!("{:08b}", self.memory[location / 8]);
-			println!("{}", location % 8);
 
 			Ok(())
 		} else {
