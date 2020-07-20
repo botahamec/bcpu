@@ -1,10 +1,15 @@
-#[derive(Debug)]
+use std::io::Read;
+
+/// A bit, either one or zero
+#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 enum Bit {
 	Zero,
 	One
 }
 
 impl Bit {
+	/// converts a number into a bit
+	/// returns None if the input is not zero or one
 	pub fn from_u8(num: u8) -> Option<Bit> {
 		match num {
 			0 => Some(Bit::Zero),
@@ -14,11 +19,14 @@ impl Bit {
 	}
 }
 
+/// virtual computer memory
+#[derive(Clone, Debug, Default, Eq, Hash, PartialEq)]
 struct Memory {
 	memory: Vec<u8>
 }
 
-#[derive(Debug)]
+/// an error resulting from memory
+#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 enum MemoryError {
 	TooBigAddress
 }
@@ -27,6 +35,7 @@ type MemoryResult<T> = Result<T, MemoryError>;
 
 impl Memory {
 
+	/// creates blank memory with all zeroes
 	pub fn with_size(size: usize) -> Self {
 		let mut memory = Vec::with_capacity(size / 8);
 		for _i in 0..(size / 8) {
@@ -36,6 +45,18 @@ impl Memory {
 		Self {memory}
 	}
 
+	/// creates blank memory that starts with the executable, and the rest is zeroes
+	pub fn from_executable_and_size(executable: Vec<u8>, size: usize) -> Self {
+		let mut memory = executable;
+		while memory.len() < size {
+			memory.push(0);
+		}
+
+		Self {memory}
+	}
+
+	/// sets a specific bit to a given value
+	/// returns an error if the address is out of bounds
 	pub fn set_bit(&mut self, location: usize, value: Bit) -> Result<(), MemoryError> {
 		if self.memory.len() > location / 8 {
 			match value {
@@ -51,6 +72,8 @@ impl Memory {
 		}
 	}
 
+	/// returns the value of the bit
+	/// returns an error if the bit is out of bounds
 	pub fn get_bit(&self, location: usize) -> Result<Bit, MemoryError> {
 		match self.memory.get(location / 8) {
 			Some(byte) => Ok(Bit::from_u8((byte >> (location % 8)) & 1).unwrap()),
@@ -59,7 +82,7 @@ impl Memory {
 	}
 }
 
-fn main() {
+fn main() -> std::io::Result<()> {
 
 	// read file name
 	let file_name = match std::env::args().next() {
@@ -73,12 +96,14 @@ fn main() {
 		}
 	};
 
+	// read file to executable
+	let mut file = std::fs::File::open(file_name).expect("File does not exist");
+	let mut executable = Vec::<u8>::new();
+	file.read_to_end(&mut executable)?;
+
 	// 2 Kb of RAM
 	const RAM_SIZE : usize = 2_000; // TODO: make this configurable
-	let mut ram = Memory::with_size(RAM_SIZE);
+	let mut ram = Memory::from_executable_and_size(executable, RAM_SIZE);
 
-	ram.set_bit(100, Bit::One).unwrap();
-	println!("{:?}", ram.get_bit(100).unwrap());
-	ram.set_bit(200, Bit::Zero).unwrap();
-	println!("{:?}", ram.get_bit(200).unwrap());
+	Ok(())
 }
