@@ -42,8 +42,8 @@ impl Memory {
 	pub fn set_bit(&mut self, location: usize, value: Bit) -> Result<(), MemoryError> {
 		if self.memory.len() > location / 8 {
 			match value {
-				Bit::One => self.memory[location / 8] |= 1 << (7 - location % 8),
-				Bit::Zero => self.memory[location / 8] &= 0 << (7 - location % 8)
+				Bit::One => self.memory[location / 8] |= 1 << (location % 8),
+				Bit::Zero => self.memory[location / 8] &= 0 << (location % 8)
 			}
 
 			Ok(())
