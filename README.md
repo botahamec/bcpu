@@ -70,11 +70,11 @@ Register 13 - Instruction pointer
 
 Register 14 - Stack Pointer
 
-Register 15 - Program Status Pointer
+Register 15 - Program Status Register
 
-#### Program Status Pointer
+#### Program Status Register
 
-2 bits for comparison (Equal | Greater | Less | Error)
+2 bits for comparison (Error | Greater | Less | Equal)
 
 1 bit for divide by zero flag
 
