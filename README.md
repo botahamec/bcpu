@@ -11,10 +11,15 @@ I plan to eventually create an assembler for this, but here's how the bitcode wo
 ### An Instruction
 
 Instruction Code - 5 bits
+
 Instruction Size - 6 bits
+
 Location (Memory | Register) - 1 bit
+
 Memory Address (Up to 2.3e18 bytes supported) - 64 bits
+
 Register - 4 bits
+
 Register Starting Location - 6 bits
 
 ### Instructions
@@ -60,17 +65,25 @@ PRINTF (number)
 ### Registers
 
 First 13 registers are general purpose
+
 Register 13 - Instruction pointer
+
 Register 14 - Stack Pointer
+
 Register 15 - Program Status Pointer
 
 #### Program Status Pointer
 
 2 bits for comparison (Equal | Greater | Less | Error)
+
 1 bit for divide by zero flag
+
 1 bit for carry flag
+
 1 bit for zero flag
+
 1 bit for sign flag
+
 1 bit for overflow flag
 
 Rest are reserved
