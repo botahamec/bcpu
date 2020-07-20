@@ -7,6 +7,7 @@ use std::io::Read;
 
 use memory::Memory;
 use bit::Bit;
+use bit::BitList;
 
 fn main() -> std::io::Result<()> {
 

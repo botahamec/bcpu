@@ -26,3 +26,36 @@ impl Bit {
 		}
 	}
 }
+
+/// A list of bits
+#[derive(Clone, Debug, Default, Eq, Hash, PartialEq)]
+pub struct BitList {
+	bits: Vec<Bit>
+}
+
+impl BitList {
+	pub fn with_capacity(capacity: usize) -> Self {
+		Self {bits: Vec::with_capacity(capacity)}
+	}
+
+	pub fn from_vec(vec: Vec<Bit>) -> Self {
+		Self {bits: vec}
+	}
+
+	pub fn len(&self) -> usize {
+		self.bits.len()
+	}
+
+	pub fn get(&self, index: usize) -> Option<&Bit> {
+		self.bits.get(index)
+	}
+
+	pub fn set_index(&mut self, index: usize, value: Bit) -> Option<()> {
+		if index < self.len() {
+			self.bits[index] = value;
+			Some(())
+		} else {
+			None
+		}
+	}
+}

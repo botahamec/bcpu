@@ -1,6 +1,6 @@
 use crate::Bit;
+use crate::BitList;
 
-pub type BitList = Vec<Bit>;
 
 #[derive(Clone, Copy, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub struct Register {
@@ -36,14 +36,14 @@ impl Register {
 			None => None,
 			Some(_) => {
 				let mut bit = bit;
-				let mut bits = BitList::with_capacity(size);
+				let mut bits = Vec::<Bit>::with_capacity(size);
 
 				while bit < bit + size {
 					bits.push(self.get_bit(bit));
 					bit += 1;
 				}
 
-				Some(bits)
+				Some(BitList::from_vec(bits))
 			}
 		}
 	}
@@ -69,6 +69,15 @@ impl StatusRegister {
 		Self::default()
 	}
 
+	/// sets a bit
+	/// panics if out of range
+	fn set_bit(&mut self, bit: usize, value: Bit) {
+		match value {
+			Bit::One => self.value |= 1 << bit,
+			Bit::Zero => self.value &= 0 << bit
+		}
+	}
+
 	/// get a specific bit
 	/// clears the bit after it's checked
 	/// panics if the bit value is invalid
@@ -77,15 +86,6 @@ impl StatusRegister {
 		self.set_bit(bit, Bit::Zero);
 
 		result
-	}
-
-	/// sets a bit
-	/// panics if out of range
-	fn set_bit(&mut self, bit: usize, value: Bit) {
-		match value {
-			Bit::One => self.value |= 1 << bit,
-			Bit::Zero => self.value &= 0 << bit
-		}
 	}
 
 	/// sets a bit to one
