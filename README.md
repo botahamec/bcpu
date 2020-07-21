@@ -14,13 +14,9 @@ Instruction Code - 5 bits
 
 Instruction Size - 6 bits
 
-Location (Memory | Register) - 1 bit
+Location (Memory | Constant) - 1 bit
 
 Memory Address (Up to 2.3e18 bytes supported) - 64 bits
-
-Register - 4 bits
-
-Register Starting Location - 6 bits
 
 ### Instructions
 
@@ -64,13 +60,11 @@ PRINTF (number)
 
 ### Registers
 
-First 13 registers are general purpose
+Register ip - Instruction pointer
 
-Register 13 - Instruction pointer
+Register sp - Stack Pointer
 
-Register 14 - Stack Pointer
-
-Register 15 - Program Status Register
+Register ps - Program Status Register
 
 #### Program Status Register
 
